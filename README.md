@@ -1,9 +1,13 @@
 # docktorrent
 
+Forked from [kfei's docktorrent box](https://github.com/kfei/docktorrent).
+to add autodl-irssi.
+
 Using [Docker](https://www.docker.com/),
-[rTorrent](http://rakshasa.github.io/rtorrent/) and
-[ruTorrent](https://github.com/Novik/ruTorrent) to run a full-featured
-BitTorrent box.
+[rTorrent](http://rakshasa.github.io/rtorrent/),
+[ruTorrent](https://github.com/Novik/ruTorrent) and
+[autodl-community-irssi](https://github.com/autodl-community/autodl-irssi)
+to run a full-featured BitTorrent box.
 
 ## Highlights
 
@@ -38,7 +42,7 @@ docker run -it \
     --dns 8.8.8.8 \
     -v /data-store:/rtorrent \
     -e UPLOAD_RATE=1024 \
-    kfei/docktorrent    # Or just `docktorrent` for locally built image
+    dabigboss80/docktorrent    # Or just `docktorrent` for locally built image
 ```
 Note that:
   - The exposed ports are required for ruTorrent web interface, rTorrent

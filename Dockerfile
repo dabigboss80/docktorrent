@@ -1,17 +1,28 @@
 FROM debian:jessie
 
-MAINTAINER kfei <kfei@kfei.net>
+MAINTAINER Da Big Boss <dabigboss80@gmail.com>
 
 ENV VER_LIBTORRENT 0.13.4
 ENV VER_RTORRENT 0.9.4
+ENV VER_AUTODL_IRSSI 1.62
+
+# Build deps
+ENV build_deps "automake build-essential ca-certificates libc-ares-dev libcppunit-dev libtool libssl-dev libxml2-dev libncurses5-dev pkg-config subversion"
+
+# Required deps
+ENV required_deps "apache2-utils libc-ares2 nginx php5-cli php5-fpm wget"
+
+# Plugin deps
+ENV plugin_deps "mediainfo unrar-free unzip perl perl-modules irssi cpanminus"
 
 WORKDIR /usr/local/src
 
 # This long disgusting instruction saves your image ~130 MB
-RUN build_deps="automake build-essential ca-certificates libc-ares-dev libcppunit-dev libtool"; \
-    build_deps="${build_deps} libssl-dev libxml2-dev libncurses5-dev pkg-config subversion wget"; \
-    set -x && \
-    apt-get update && apt-get install -q -y --no-install-recommends ${build_deps} && \
+RUN set -x && \
+    apt-get update && \
+    apt-get install -q -y --no-install-recommends ${build_deps} && \
+    apt-get install -q -y --no-install-recommends ${required_deps} && \
+    apt-get install -q -y --no-install-recommends ${plugin_deps} && \
     wget http://curl.haxx.se/download/curl-7.39.0.tar.gz && \
     tar xzvfp curl-7.39.0.tar.gz && \
     cd curl-7.39.0 && \
@@ -54,23 +65,11 @@ RUN build_deps="automake build-essential ca-certificates libc-ares-dev libcppuni
     mkdir rutorrent && \
     curl -L -O https://github.com/Novik/ruTorrent/archive/master.tar.gz && \
     tar xzvf master.tar.gz -C rutorrent --strip-components 1 && \
-    rm -rf *.tar.gz && \
-    apt-get purge -y --auto-remove ${build_deps} && \
-    apt-get autoremove -y
+    rm -rf *.tar.gz
 
-# Install required packages
-RUN apt-get update && apt-get install -q -y --no-install-recommends \
-    apache2-utils \
-    libc-ares2 \
-    nginx \
-    php5-cli \
-    php5-fpm
-
-# Install packages for ruTorrent plugins
-RUN apt-get update && apt-get install -q -y --no-install-recommends \
-    mediainfo \
-    unrar-free \
-    unzip
+# Install CPAN packages needed
+RUN cpanm Archive::Zip Net::SSLeay HTML::Entities XML::LibXML \
+    Digest::SHA1 JSON JSON::XS
 
 # For ffmpeg, which is required by the ruTorrent screenshots plugin
 # This increases ~53 MB of the image size, remove it if you really don't need screenshots
@@ -79,6 +78,19 @@ RUN echo "deb http://www.deb-multimedia.org jessie main" >> /etc/apt/sources.lis
     apt-get update && apt-get install -q -y --no-install-recommends \
     deb-multimedia-keyring \
     ffmpeg
+
+
+# Instal AutoDL IRSSI
+RUN mkdir -p /root/.irssi/scripts/autorun  &&  mkdir -p /root/.autodl
+ADD autodl-irssi-community-v1.62   /root/.irssi/scripts
+ADD autodl-irssi-community-v1.62/autodl-irssi.pl  /root/.irssi/scripts/autorun/
+ADD autodl-irssi-community-v1.62/autodl.cfg /root/.autodl/autodl.cfg
+#RUN touch /root/.autodl/autodl.cfg
+
+# install AutoDL IRSSI rutorrent plugin
+RUN mkdir -p /usr/share/nginx/html/rutorrent/plugins/autodl-irssi
+ADD autodl-irssi-rutorrent-plugin /usr/share/nginx/html/rutorrent/plugins/autodl-irssi
+
 
 # IMPORTANT: Change the default login/password of ruTorrent before build
 RUN htpasswd -cb /usr/share/nginx/html/rutorrent/.htpasswd alexrecarey NbQ8bKXdWzsACX86cfdK8
@@ -93,6 +105,10 @@ ADD s6-1.1.3.2-musl-static.tar.xz /
 
 # Service directories and the wrapper script
 COPY rootfs /
+
+# Clear space to make a smaller image
+RUN apt-get purge -y --auto-remove ${build_deps} && \
+    apt-get autoremove -y
 
 # Run the wrapper script first
 ENTRYPOINT ["/usr/local/bin/docktorrent"]
