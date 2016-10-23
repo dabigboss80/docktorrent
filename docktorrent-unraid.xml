@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Container>
+  <Name>Docktorrent</Name>
+  <Description>rtorrent client, rutorrent ui, autodl-irssi</Description>
+  <Registry>https://hub.docker.com/r/dabigboss/docktorrent/</Registry>
+  <Repository>dabigboss/docktorrent</Repository>
+  <BindTime>true</BindTime>
+  <Privileged>false</Privileged>
+  <Environment>
+    <Variable>
+      <Name>LOGS_OFF</Name>
+      <Value>yes</Value>
+    </Variable>
+    <Variable>
+      <Name>AUTH_OFF</Name>
+      <Value>all</Value>
+    </Variable>
+  </Environment>
+  <Networking>
+    <Mode>bridge</Mode>
+    <Publish>
+      <Port>
+        <HostPort>80</HostPort>
+        <ContainerPort>80</ContainerPort>
+        <Protocol>tcp</Protocol>
+      </Port>
+      <Port>
+        <HostPort>45566</HostPort>
+        <ContainerPort>455666</ContainerPort>
+        <Protocol>tcp</Protocol>
+      </Port>
+      <Port>
+        <HostPort>9527</HostPort>
+        <ContainerPort>9527</ContainerPort>
+        <Protocol>udp</Protocol>
+      </Port>
+    </Publish>
+  </Networking>
+  <Data>
+    <Volume>
+      <HostDir>/mnt/user/Downloads/rtorrent/</HostDir>
+      <ContainerDir>/rtorrent/</ContainerDir>
+      <Mode>rw</Mode>
+    </Volume>
+  </Data>
+  <Version></Version>
+  <WebUI>https://[IP]:[PORT:80]/</WebUI>
+  <Banner></Banner>
+  <Icon></Icon>
+  <ExtraParams></ExtraParams>
+</Container>
