@@ -20,13 +20,13 @@
     <Mode>bridge</Mode>
     <Publish>
       <Port>
-        <HostPort>80</HostPort>
+        <HostPort>9980</HostPort>
         <ContainerPort>80</ContainerPort>
         <Protocol>tcp</Protocol>
       </Port>
       <Port>
         <HostPort>45566</HostPort>
-        <ContainerPort>455666</ContainerPort>
+        <ContainerPort>45566</ContainerPort>
         <Protocol>tcp</Protocol>
       </Port>
       <Port>
@@ -44,8 +44,8 @@
     </Volume>
   </Data>
   <Version></Version>
-  <WebUI>https://[IP]:[PORT:80]/</WebUI>
+  <WebUI>https://[IP]:[PORT:9980]/</WebUI>
   <Banner></Banner>
-  <Icon></Icon>
+  <Icon>http://imgur.com/IfbLUpJ</Icon>
   <ExtraParams></ExtraParams>
 </Container>
