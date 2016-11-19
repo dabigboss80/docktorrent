@@ -10,7 +10,7 @@ ENV VER_AUTODL_IRSSI 1.62
 ENV build_deps "automake build-essential ca-certificates libc-ares-dev libcppunit-dev libtool libssl-dev libxml2-dev libncurses5-dev pkg-config subversion"
 
 # Required deps
-ENV required_deps "apache2-utils libc-ares2 nginx php5-cli php5-fpm wget"
+ENV required_deps "apache2-utils libc-ares2 nginx php5-cli php5-fpm wget screen"
 
 # Plugin deps
 ENV plugin_deps "mediainfo unrar-free unzip perl perl-modules irssi cpanminus"

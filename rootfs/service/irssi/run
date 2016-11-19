@@ -1,4 +1,5 @@
 #!/bin/bash
 
 # Start irssi client
-exec irssi
+export TERM=xterm
+exec irssi -d
