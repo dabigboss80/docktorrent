@@ -7,7 +7,7 @@ ENV VER_RTORRENT 0.9.4
 ENV VER_AUTODL_IRSSI 1.62
 
 # Build deps
-ENV build_deps "automake build-essential ca-certificates libc-ares-dev libcppunit-dev libtool libssl-dev libxml2-dev libncurses5-dev pkg-config subversion"
+ENV build_deps "automake build-essential ca-certificates libc-ares-dev libcppunit-dev libtool libssl-dev libxml2-dev libncurses5-dev pkg-config subversion vim"
 
 # Required deps
 ENV required_deps "apache2-utils libc-ares2 nginx php5-cli php5-fpm wget screen"
@@ -107,8 +107,8 @@ ADD s6-1.1.3.2-musl-static.tar.xz /
 COPY rootfs /
 
 # Clear space to make a smaller image
-RUN apt-get purge -y --auto-remove ${build_deps} && \
-    apt-get autoremove -y
+#RUN apt-get purge -y --auto-remove ${build_deps} && \
+#    apt-get autoremove -y
 
 # Run the wrapper script first
 ENTRYPOINT ["/usr/local/bin/docktorrent"]
@@ -121,3 +121,4 @@ VOLUME ["/rtorrent", "/var/log"]
 
 # This should be removed in the latest version of Docker
 ENV HOME /root
+ENV TERM xterm

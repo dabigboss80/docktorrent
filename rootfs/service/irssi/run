@@ -1,5 +1,9 @@
 #!/bin/bash
+# Set timezone
+#export TZ='EET'
+#export TERM=xterm
 
-# Start irssi client
-export TERM=xterm
-exec irssi -d
+# Start a new screen with unicode support (-U), named as 'irc' (-S),
+# in detached mode (-m -d) and run irssi in it.
+
+script -c "/usr/bin/screen -U -S irc  /usr/bin/irssi"
