@@ -107,8 +107,8 @@ ADD s6-1.1.3.2-musl-static.tar.xz /
 COPY rootfs /
 
 # Clear space to make a smaller image
-#RUN apt-get purge -y --auto-remove ${build_deps} && \
-#    apt-get autoremove -y
+RUN apt-get purge -y --auto-remove ${build_deps} && \
+    apt-get autoremove -y
 
 # Run the wrapper script first
 ENTRYPOINT ["/usr/local/bin/docktorrent"]
